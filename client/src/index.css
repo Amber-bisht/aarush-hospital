@@ -1,0 +1,45 @@
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+}
+
+body {
+  @apply min-h-screen bg-app-bg bg-glow text-app-text antialiased;
+}
+
+#root {
+  @apply min-h-screen;
+}
+
+.glass-panel {
+  @apply rounded-3xl border border-app-border bg-white/90 shadow-card backdrop-blur;
+}
+
+.section-title {
+  @apply text-lg font-bold tracking-tight text-app-black;
+}
+
+.field-label {
+  @apply mb-2 block text-sm font-semibold text-app-black;
+}
+
+.field-input {
+  @apply w-full rounded-2xl border border-app-border bg-white px-4 py-3 text-sm text-app-black outline-none transition focus:border-app-accent focus:ring-4 focus:ring-app-accent/10;
+}
+
+.btn-primary {
+  @apply inline-flex items-center justify-center rounded-2xl bg-app-accent px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-[#e9277b] disabled:cursor-not-allowed disabled:opacity-60;
+}
+
+.btn-secondary {
+  @apply inline-flex items-center justify-center rounded-2xl border border-app-border bg-white px-4 py-2.5 text-sm font-semibold text-app-black transition hover:border-app-accent hover:text-app-accent;
+}
+
+.btn-danger {
+  @apply inline-flex items-center justify-center rounded-2xl bg-black px-4 py-2.5 text-sm font-semibold text-white transition hover:opacity-90;
+}
