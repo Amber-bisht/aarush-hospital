@@ -8,6 +8,7 @@
   const isDoctorSelf = user.role === 'doctor';
   const canManage = user.role === 'admin';
   const content = document.getElementById('page-content');
+  let searchQuery = '';
 
   if (isDoctorSelf) {
     renderSelfProfile();
@@ -52,16 +53,6 @@
             </div>
           </div>
         </div>
-        ${renderDataTable(
-          [
-            { key: 'patient_name', header: 'Patient' },
-            { key: 'date', header: 'Date', render: r => formatDateTime(r.date) },
-            { key: 'reason', header: 'Reason' },
-            { key: 'status', header: 'Status', render: r => renderBadge(r.status) },
-          ],
-          appointments,
-          'No assigned appointments yet.'
-        )}
       `;
     } catch (err) {
       showAlert('doc-alert', err.data?.message || 'Unable to load doctor profile.', 'error');
@@ -69,7 +60,7 @@
   }
 
   /* ── Doctor Directory (Admin / Patient view) ── */
-  let searchQuery = '';
+
 
   async function renderDoctorDirectory() {
     content.innerHTML = `
@@ -78,8 +69,6 @@
           'Doctor directory',
           'Manage doctor profiles or browse clinician specializations across the hospital.',
           `
-            <input class="field-input" style="min-width: 15rem;" placeholder="Search by doctor or specialization" id="doc-search">
-            <button type="button" class="btn-secondary" id="doc-search-btn">Search</button>
             ${canManage ? '<button type="button" class="btn-primary" id="doc-add-btn">Add doctor</button>' : ''}
           `
         )}
@@ -89,18 +78,6 @@
         </div>
       </div>
     `;
-
-    document.getElementById('doc-search-btn').addEventListener('click', () => {
-      searchQuery = document.getElementById('doc-search').value;
-      loadDoctors();
-    });
-
-    document.getElementById('doc-search').addEventListener('keydown', (e) => {
-      if (e.key === 'Enter') {
-        searchQuery = e.target.value;
-        loadDoctors();
-      }
-    });
 
     if (canManage) {
       document.getElementById('doc-add-btn').addEventListener('click', () => {

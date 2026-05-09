@@ -121,6 +121,32 @@
             `<option value="${a.id}">${escapeHtml(a.patient_name)} • ${escapeHtml(a.doctor_name)} • ${formatDateTime(a.date)}</option>`
           ).join('');
       });
+
+      // Automatically calculate amount when appointment is selected
+      document.getElementById('bill-appt-select').addEventListener('change', async (e) => {
+        const apptId = e.target.value;
+        if (!apptId) return;
+
+        try {
+          const data = await api.get(`/appointments/${apptId}`);
+          let total = 0;
+          if (data.prescription && data.prescription.treatment_plan) {
+            try {
+              const items = JSON.parse(data.prescription.treatment_plan);
+              total = items.reduce((sum, item) => sum + item.price, 0);
+            } catch (err) {
+              console.error('Failed to parse treatment plan:', err);
+            }
+          }
+          
+          // Fallback to a base consultation fee if no treatment plan exists
+          if (total === 0) total = 500; 
+
+          document.querySelector('input[name="amount"]').value = total;
+        } catch (err) {
+          console.error('Failed to fetch appointment details for billing:', err);
+        }
+      });
     } catch (err) {
       showAlert('bill-alert', err.data?.message || 'Unable to load billing metadata.', 'error');
     }

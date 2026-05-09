@@ -8,8 +8,13 @@
   const isSelfView = user.role === 'patient';
   const canManage = user.role === 'admin';
   const content = document.getElementById('page-content');
+  let searchQuery = '';
 
   if (isSelfView) {
+    if (!user.profile) {
+      content.innerHTML = `<div class="alert alert-error">Profile not found. Please contact support.</div>`;
+      return;
+    }
     renderSelfRecord();
   } else {
     renderPatientDirectory();
@@ -97,7 +102,7 @@
   }
 
   /* ── Patient Directory (Admin / Doctor view) ── */
-  let searchQuery = '';
+
 
   async function renderPatientDirectory() {
     content.innerHTML = `
@@ -106,8 +111,6 @@
           'Patient records',
           'Search, review, and manage patient information with appointment, prescription, and billing context.',
           `
-            <input class="field-input" style="min-width: 15rem;" placeholder="Search by patient name or phone" id="pat-search">
-            <button type="button" class="btn-secondary" id="pat-search-btn">Search</button>
             ${canManage ? '<button type="button" class="btn-primary" id="pat-add-btn">Add patient</button>' : ''}
           `
         )}
@@ -115,15 +118,6 @@
         <div id="pat-table"><p class="text-sm text-muted">Loading patients...</p></div>
       </div>
     `;
-
-    document.getElementById('pat-search-btn').addEventListener('click', () => {
-      searchQuery = document.getElementById('pat-search').value;
-      loadPatients();
-    });
-
-    document.getElementById('pat-search').addEventListener('keydown', (e) => {
-      if (e.key === 'Enter') { searchQuery = e.target.value; loadPatients(); }
-    });
 
     if (canManage) {
       document.getElementById('pat-add-btn').addEventListener('click', openCreatePatient);
@@ -157,7 +151,8 @@
         }
       );
     } catch (err) {
-      showAlert('pat-alert', err.data?.message || 'Unable to load patients.', 'error');
+      console.error('Failed to load patients:', err);
+      showAlert('pat-alert', err.data?.message || err.message || 'Unable to load patients.', 'error');
     }
   }
 

@@ -56,10 +56,50 @@
     .tab-register-active .auth-tab-indicator {
       transform: translateX(100%);
     }
+
+    .auth-nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      padding: 1rem 2.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 100;
+      background: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border-bottom: 1px solid var(--color-border);
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    }
+
+    .auth-nav-brand {
+      font-size: 1.25rem;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      color: var(--color-black);
+    }
+
+    .auth-nav-link {
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--color-muted);
+      transition: color 0.2s;
+    }
+
+    .auth-nav-link:hover {
+      color: var(--color-black);
+    }
   </style>
 </head>
 
 <body>
+  <nav class="auth-nav">
+    <a href="/" class="auth-nav-brand">Aarush Hospital</a>
+    <a href="/" class="auth-nav-link">Home</a>
+  </nav>
+
   <div class="auth-container">
     <div class="glass-panel"
       style="width: 100%; max-width: 30rem; padding: 3rem; position: relative; overflow: hidden;">

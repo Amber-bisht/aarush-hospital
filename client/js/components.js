@@ -94,7 +94,7 @@ function renderInfoBox(label, value, big) {
   return `
     <div class="info-box">
       <p class="info-label">${label}</p>
-      <p class="info-value${big ? ' big' : ''}">${value || '--'}</p>
+      <p class="info-value${big ? ' big' : ''}">${value ?? '--'}</p>
     </div>
   `;
 }
@@ -134,8 +134,10 @@ function renderFormField(opts) {
 
 /* ── HTML escape ── */
 function escapeHtml(str) {
+  if (str === null || str === undefined) return '';
+  const s = String(str);
   const map = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' };
-  return str.replace(/[&<>"']/g, m => map[m]);
+  return s.replace(/[&<>"']/g, m => map[m]);
 }
 
 window.renderBadge = renderBadge;

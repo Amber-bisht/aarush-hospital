@@ -91,4 +91,5 @@ export const prescriptionSchema = Joi.object({
   diagnosis: Joi.string().trim().min(3).required(),
   medicines: Joi.string().trim().min(3).required(),
   notes: Joi.string().allow('', null),
+  treatment_plan: Joi.string().allow('', null),
 });

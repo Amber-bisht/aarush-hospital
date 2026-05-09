@@ -66,7 +66,11 @@ function getNavigationByRole(role) {
     return [...common, { label: 'Patients', path: '/patients.html' }];
   }
 
-  return [...common, { label: 'Patients', path: '/patients.html' }, { label: 'Billing', path: '/billing.html' }];
+  // Patient role
+  return [
+    { label: 'Appointments', path: '/appointments.html' },
+    { label: 'Billing', path: '/billing.html' },
+  ];
 }
 
 /* ── DOM helpers ── */

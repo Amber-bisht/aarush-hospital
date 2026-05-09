@@ -79,7 +79,7 @@ export const getAppointmentById = asyncHandler(async (req, res) => {
   }
 
   const [prescriptionRows] = await pool.query(
-    `SELECT id, appointment_id, diagnosis, medicines, notes, created_at
+    `SELECT id, appointment_id, diagnosis, medicines, notes, treatment_plan, created_at
      FROM prescriptions
      WHERE appointment_id = ?`,
     [appointmentId],
@@ -92,11 +92,19 @@ export const getAppointmentById = asyncHandler(async (req, res) => {
     [appointmentId],
   );
 
-  res.json({
+  const resData = {
     appointment,
     prescription: prescriptionRows[0] || null,
     bill: billRows[0] || null,
-  });
+  };
+
+  // Only hide treatment_plan if the user is a patient (optional, but keep for consistency)
+  if (req.user.role === 'patient' && resData.prescription) {
+    // Patients might need to see treatment_plan for billing, but keep it hidden if you prefer
+    // For now, let's allow patients to see it as it's part of their medical record
+  }
+
+  res.json(resData);
 });
 
 export const createAppointment = asyncHandler(async (req, res) => {
@@ -209,7 +217,7 @@ export const cancelAppointment = asyncHandler(async (req, res) => {
 
 export const addOrUpdatePrescription = asyncHandler(async (req, res) => {
   const appointmentId = Number(req.params.id);
-  const { diagnosis, medicines, notes } = req.body;
+  const { diagnosis, medicines, notes, treatment_plan } = req.body;
 
   const [[appointment]] = await pool.query(
     'SELECT id, patient_id, doctor_id FROM appointments WHERE id = ?',
@@ -228,12 +236,13 @@ export const addOrUpdatePrescription = asyncHandler(async (req, res) => {
   }
 
   await pool.query(
-    `INSERT INTO prescriptions (appointment_id, patient_id, doctor_id, diagnosis, medicines, notes)
-     VALUES (?, ?, ?, ?, ?, ?)
+    `INSERT INTO prescriptions (appointment_id, patient_id, doctor_id, diagnosis, medicines, notes, treatment_plan)
+     VALUES (?, ?, ?, ?, ?, ?, ?)
      ON DUPLICATE KEY UPDATE
-       diagnosis = VALUES(diagnosis),
-       medicines = VALUES(medicines),
-       notes = VALUES(notes)`,
+       diagnosis = ?,
+       medicines = ?,
+       notes = ?,
+       treatment_plan = ?`,
     [
       appointmentId,
       appointment.patient_id,
@@ -241,10 +250,25 @@ export const addOrUpdatePrescription = asyncHandler(async (req, res) => {
       diagnosis,
       medicines,
       notes || null,
+      treatment_plan || null,
+      // Values for the UPDATE part
+      diagnosis,
+      medicines,
+      notes || null,
+      treatment_plan || null,
     ],
   );
 
   await pool.query(`UPDATE appointments SET status = 'completed' WHERE id = ?`, [appointmentId]);
 
-  res.json({ message: 'Prescription saved successfully.' });
+  // Fetch the saved prescription to return it
+  const [savedRows] = await pool.query(
+    `SELECT * FROM prescriptions WHERE appointment_id = ?`,
+    [appointmentId],
+  );
+
+  res.json({
+    message: 'Treatment plan saved successfully.',
+    prescription: savedRows[0],
+  });
 });

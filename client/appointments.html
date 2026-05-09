@@ -28,10 +28,16 @@
             <option value="">Select doctor</option>
           </select>
         </label>
-        <label class="block">
-          <span class="field-label">Appointment date</span>
-          <input class="field-input" type="datetime-local" name="date" required>
-        </label>
+        <div class="grid gap-4 sm-grid-2">
+          <label class="block">
+            <span class="field-label">Date</span>
+            <input class="field-input" type="date" name="appt_date" id="booking-date" required>
+          </label>
+          <label class="block">
+            <span class="field-label">Time</span>
+            <input class="field-input" type="time" name="appt_time" id="booking-time" required>
+          </label>
+        </div>
         <label class="block">
           <span class="field-label">Reason</span>
           <input class="field-input" name="reason" placeholder="Short visit summary">
@@ -90,11 +96,119 @@
           <span class="field-label">Clinical notes</span>
           <textarea class="field-input min-h-28" name="notes"></textarea>
         </label>
-        <button type="submit" class="btn-primary w-full">Save prescription</button>
+        <div id="prescription-treatment-area" class="space-y-4">
+          <p class="text-sm font-bold uppercase tracking-wider text-accent">Treatment Plan</p>
+          
+          <div class="grid gap-4 sm-grid-3">
+            <label class="block">
+              <span class="field-label">Add Service</span>
+              <select class="field-input" id="treatment-service-select">
+                <option value="">-- Pick Service --</option>
+              </select>
+            </label>
+            <label class="block">
+              <span class="field-label">Add Medicine</span>
+              <select class="field-input" id="treatment-medicine-select">
+                <option value="">-- Pick Medicine --</option>
+              </select>
+            </label>
+            <label class="block">
+              <span class="field-label">Add Test</span>
+              <select class="field-input" id="treatment-test-select">
+                <option value="">-- Pick Test --</option>
+              </select>
+            </label>
+          </div>
+
+          <div id="treatment-items-list" class="space-y-2 py-2">
+            <!-- Selected items will appear here -->
+          </div>
+          
+          <div class="flex justify-between items-center pt-2 border-t border-dashed">
+            <span class="text-sm font-semibold">Total Estimated Cost:</span>
+            <span class="text-lg font-bold text-primary" id="treatment-total">₹0</span>
+          </div>
+        </div>
+
+        <button type="submit" class="btn-primary w-full" id="prescription-save-btn">Save Treatment Plan</button>
       </form>
     </div>
   </div>
 
+  <!-- Bill Modal -->
+  <div id="bill-modal" class="modal-overlay hidden">
+    <div class="glass-panel modal-panel max-w-2xl">
+      <div class="modal-header no-print">
+        <div>
+          <h3 class="modal-title">Hospital Bill</h3>
+          <p class="modal-desc">Official invoice for medical services and treatment.</p>
+        </div>
+        <button class="modal-close" onclick="closeModal('bill-modal')">Close</button>
+      </div>
+
+      <div id="bill-content" class="bg-white p-8 rounded-xl shadow-sm text-slate-800 border border-slate-100">
+        <!-- Bill header -->
+        <div class="flex justify-between items-start border-b-2 border-slate-100 pb-6 mb-6">
+          <div>
+            <h1 class="text-2xl font-black text-primary uppercase tracking-tighter">Aarush Hospital</h1>
+            <p class="text-xs text-muted font-medium mt-1">Quality Care, Every Time.</p>
+          </div>
+          <div class="text-right">
+            <div id="bill-status-badge"></div>
+            <p class="text-xs text-muted mt-2" id="bill-date"></p>
+          </div>
+        </div>
+
+        <!-- Bill Details -->
+        <div class="grid grid-cols-2 gap-8 mb-8 text-sm">
+          <div>
+            <p class="text-xs font-bold uppercase text-muted mb-1">Patient Details</p>
+            <p class="font-bold text-lg" id="bill-patient-name"></p>
+            <p class="text-muted" id="bill-patient-info"></p>
+          </div>
+          <div class="text-right">
+            <p class="text-xs font-bold uppercase text-muted mb-1">Consultant</p>
+            <p class="font-bold" id="bill-doctor-name"></p>
+            <p class="text-muted" id="bill-doctor-spec"></p>
+          </div>
+        </div>
+
+        <!-- Treatment Table -->
+        <div class="mb-8">
+          <table class="w-full text-sm">
+            <thead>
+              <tr class="border-b border-slate-200">
+                <th class="text-left py-3 font-bold uppercase text-xs text-muted">Description</th>
+                <th class="text-right py-3 font-bold uppercase text-xs text-muted">Price</th>
+              </tr>
+            </thead>
+            <tbody id="bill-items-body">
+              <!-- Items here -->
+            </tbody>
+            <tfoot>
+              <tr class="border-t-2 border-slate-100">
+                <td class="py-4 font-bold text-lg text-right pr-4">Total Amount</td>
+                <td class="py-4 font-black text-xl text-right text-primary" id="bill-total-amount"></td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+
+        <!-- Footer -->
+        <div class="text-center pt-6 border-t border-slate-100 text-[10px] text-muted italic">
+          <p>This is a computer-generated document and does not require a physical signature.</p>
+          <p>Thank you for choosing Aarush Hospital for your healthcare needs.</p>
+        </div>
+      </div>
+
+      <div class="mt-6 flex gap-3 no-print">
+        <button id="download-bill-btn" class="btn-primary flex-1">Download Bill (PDF)</button>
+        <button onclick="closeModal('bill-modal')" class="btn-secondary">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
   <script src="/js/api.js"></script>
   <script src="/js/utils.js"></script>
   <script src="/js/components.js"></script>

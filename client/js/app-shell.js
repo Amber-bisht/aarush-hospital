@@ -38,14 +38,11 @@
     <!-- Sidebar -->
     <aside id="sidebar" class="sidebar closed">
       <div class="sidebar-brand">
-        <p class="brand-tag">HMS</p>
         <h2 class="brand-name">Aarush Hospital</h2>
-        <p class="brand-desc">Modern hospital operations in one clean workspace.</p>
       </div>
       <div class="sidebar-user">
         <p class="user-name">${escapeHtml(userName)}</p>
-        <p class="user-email">${escapeHtml(user.email)}</p>
-        <div class="user-role mt-3">${renderBadge(user.role)}</div>
+        <p class="user-email">Logged in as ${escapeHtml(user.role)}</p>
       </div>
       <nav class="sidebar-nav">
         ${navLinksHTML}
@@ -69,9 +66,9 @@
               <p class="chip-label">Today</p>
               <p class="chip-value">${formatTodayDate()}</p>
             </div>
-            <div class="topbar-chip filled">
-              <p class="chip-label">Logged in</p>
-              <p class="chip-value">${escapeHtml(user.role)}</p>
+            <div class="topbar-chip filled" style="background: var(--color-soft); color: var(--color-black);">
+              <p class="chip-label">Account</p>
+              <p class="chip-value">${escapeHtml(user.email)}</p>
             </div>
             <button type="button" class="btn-secondary" onclick="auth.logout()">Sign out</button>
           </div>
