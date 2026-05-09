@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "name": "aarush-hospital-management",
+  "name": "hospital-management-system",
   "builds": [
     {
       "src": "server/server.js",

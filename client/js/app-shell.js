@@ -20,7 +20,7 @@
     '/appointments.html': 'Appointments',
     '/billing.html': 'Billing',
   };
-  const title = pageTitles[currentPath] || 'Aarush Hospital Management';
+  const title = pageTitles[currentPath] || 'Hospital Management System';
 
   // Build sidebar nav links
   const navLinksHTML = navItems.map(item => {
@@ -38,7 +38,7 @@
     <!-- Sidebar -->
     <aside id="sidebar" class="sidebar closed">
       <div class="sidebar-brand">
-        <h2 class="brand-name">Aarush Hospital</h2>
+        <h2 class="brand-name">Hospital Management System</h2>
       </div>
       <div class="sidebar-user">
         <p class="user-name">${escapeHtml(userName)}</p>
