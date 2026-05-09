@@ -18,7 +18,10 @@ const app = express();
 
 app.use(
   cors({
-    origin: process.env.CLIENT_URL?.split(',') || ['http://localhost:5173'],
+    origin: process.env.CLIENT_URL?.split(',').map(u => u.trim()) || [
+      'http://localhost:5000',
+      'https://aarush-hospital.vercel.app'
+    ],
     credentials: false,
   }),
 );
