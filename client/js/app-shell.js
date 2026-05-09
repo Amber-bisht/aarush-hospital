@@ -20,7 +20,7 @@
     '/appointments.html': 'Appointments',
     '/billing.html': 'Billing',
   };
-  const title = pageTitles[currentPath] || 'Hospital Management System';
+  const title = pageTitles[currentPath] || 'Aarush Hospital Management';
 
   // Build sidebar nav links
   const navLinksHTML = navItems.map(item => {
@@ -39,7 +39,7 @@
     <aside id="sidebar" class="sidebar closed">
       <div class="sidebar-brand">
         <p class="brand-tag">HMS</p>
-        <h2 class="brand-name">Careboard Suite</h2>
+        <h2 class="brand-name">Aarush Hospital</h2>
         <p class="brand-desc">Modern hospital operations in one clean workspace.</p>
       </div>
       <div class="sidebar-user">

@@ -1,4 +1,4 @@
-# Hospital Management System
+# Aarush Hospital Management
 
 A production-ready Hospital Management System built with Node.js, Express, raw MySQL queries, Chart.js, and a plain HTML/CSS/JS frontend.
 

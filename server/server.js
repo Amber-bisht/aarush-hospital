@@ -55,6 +55,10 @@ app.use(errorMiddleware);
 
 const port = Number(process.env.PORT || 5000);
 
-app.listen(port, () => {
-  console.log(`HMS API listening on port ${port}`);
-});
+if (process.env.NODE_ENV !== 'production') {
+  app.listen(port, () => {
+    console.log(`HMS API listening on port ${port}`);
+  });
+}
+
+export default app;
