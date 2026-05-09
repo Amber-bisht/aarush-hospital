@@ -3,7 +3,10 @@
  * Handles JWT access/refresh token lifecycle.
  */
 
-const API_BASE_URL = 'http://localhost:5000/api';
+// Dynamic API detection based on environment
+const API_BASE_URL = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+  ? 'http://localhost:5000/api'
+  : (window.location.origin + '/api'); // Fallback to relative path for production/Vercel proxying
 
 const STORAGE_KEY = 'hms_auth_state';
 
