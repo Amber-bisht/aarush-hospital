@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,47 +15,70 @@
       justify-content: center;
       padding: 2rem 1rem;
     }
+
     .auth-tabs {
-      display: flex;
-      gap: 1rem;
-      margin-bottom: 2rem;
-      border-bottom: 1px solid var(--color-border);
-      padding-bottom: 0.5rem;
+      display: inline-flex;
+      background: var(--color-soft);
+      padding: 0.375rem;
+      border-radius: var(--radius-md);
+      margin-bottom: 2.5rem;
+      position: relative;
+      width: 100%;
     }
     .auth-tab {
+      flex: 1;
       cursor: pointer;
       font-size: 0.875rem;
       font-weight: 700;
       color: var(--color-muted);
-      padding: 0.5rem 1rem;
-      transition: all 0.2s;
-      border-radius: var(--radius-md);
+      padding: 0.625rem;
+      text-align: center;
+      transition: color 0.3s;
+      border-radius: calc(var(--radius-md) - 0.25rem);
+      z-index: 2;
+      user-select: none;
     }
     .auth-tab.active {
-      color: var(--color-accent);
-      background: var(--color-accent-soft);
+      color: var(--color-black);
+    }
+    .auth-tab-indicator {
+      position: absolute;
+      top: 0.375rem;
+      bottom: 0.375rem;
+      left: 0.375rem;
+      width: calc(50% - 0.375rem);
+      background: var(--color-white);
+      border-radius: calc(var(--radius-md) - 0.25rem);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+      transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      z-index: 1;
+    }
+    .tab-register-active .auth-tab-indicator {
+      transform: translateX(100%);
     }
   </style>
 </head>
+
 <body>
   <div class="auth-container">
-    <div class="glass-panel" style="width: 100%; max-width: 32rem; padding: 2.5rem;">
-      <div class="flex items-center gap-2 mb-8">
-        <div style="width: 24px; height: 24px; background: var(--color-accent); border-radius: 6px;"></div>
-        <span class="text-lg font-bold text-black">Aarush Hospital</span>
+    <div class="glass-panel"
+      style="width: 100%; max-width: 30rem; padding: 3rem; position: relative; overflow: hidden;">
+      <!-- Subtle top glow -->
+      <div
+        style="position: absolute; top: -50px; left: 50%; transform: translateX(-50%); width: 200px; height: 100px; background: var(--color-accent); filter: blur(80px); opacity: 0.1; pointer-events: none;">
       </div>
 
+
       <!-- Tabs -->
-      <div class="auth-tabs">
+      <div class="auth-tabs" id="tabs-container">
+        <div class="auth-tab-indicator"></div>
         <div class="auth-tab active" id="tab-login" onclick="switchMode('login')">Sign In</div>
         <div class="auth-tab" id="tab-register" onclick="switchMode('register')">Register</div>
       </div>
 
       <!-- Login Form -->
       <form id="login-form" class="space-y-5">
-        <h2 class="text-2xl font-extrabold tracking-tight text-black">Welcome back</h2>
-        <p class="text-sm text-muted">Enter your credentials to access the dashboard.</p>
-        
+
         <label class="block">
           <span class="field-label">Email</span>
           <input class="field-input" type="email" name="email" placeholder="you@hospital.com" required>
@@ -69,17 +93,8 @@
 
       <!-- Register Form (Hidden by default) -->
       <form id="register-form" class="space-y-5 hidden">
-        <h2 class="text-2xl font-extrabold tracking-tight text-black">Get started</h2>
-        <p class="text-sm text-muted">Create your account by selecting your role.</p>
-
-        <label class="block">
-          <span class="field-label">Role</span>
-          <select class="field-input" name="role" id="reg-role">
-            <option value="patient">Patient</option>
-            <option value="doctor">Doctor</option>
-            <option value="admin">Admin</option>
-          </select>
-        </label>
+        <!-- Role is hidden and hardcoded to patient -->
+        <input type="hidden" name="role" value="patient">
 
         <div class="grid gap-5 sm-grid-2">
           <label class="block">
@@ -92,44 +107,35 @@
           </label>
         </div>
 
-        <div id="name-phone-group" class="grid gap-5 sm-grid-2">
+        <div class="grid gap-5 sm-grid-2">
           <label class="block">
-            <span class="field-label" id="name-label">Patient name</span>
-            <input class="field-input" name="name" placeholder="Full name">
+            <span class="field-label">Patient name</span>
+            <input class="field-input" name="name" placeholder="Full name" required>
           </label>
           <label class="block">
             <span class="field-label">Phone</span>
-            <input class="field-input" name="phone" placeholder="+91...">
+            <input class="field-input" name="phone" placeholder="+91..." required>
           </label>
         </div>
 
-        <div id="patient-fields">
-          <div class="grid gap-5 sm-grid-2">
-            <label class="block">
-              <span class="field-label">Age</span>
-              <input class="field-input" type="number" name="age">
-            </label>
-            <label class="block">
-              <span class="field-label">Gender</span>
-              <select class="field-input" name="gender">
-                <option value="female">Female</option>
-                <option value="male">Male</option>
-                <option value="other">Other</option>
-              </select>
-            </label>
-          </div>
-          <label class="block mt-4">
-            <span class="field-label">Address</span>
-            <input class="field-input" name="address" placeholder="Street, city, locality">
-          </label>
-        </div>
-
-        <div id="doctor-fields" class="hidden">
+        <div class="grid gap-5 sm-grid-2">
           <label class="block">
-            <span class="field-label">Specialization</span>
-            <input class="field-input" name="specialization" placeholder="Cardiology">
+            <span class="field-label">Age</span>
+            <input class="field-input" type="number" name="age" min="0" max="120" required>
+          </label>
+          <label class="block">
+            <span class="field-label">Gender</span>
+            <select class="field-input" name="gender">
+              <option value="female">Female</option>
+              <option value="male">Male</option>
+              <option value="other">Other</option>
+            </select>
           </label>
         </div>
+        <label class="block">
+          <span class="field-label">Address</span>
+          <input class="field-input" name="address" placeholder="Street, city, locality" required>
+        </label>
 
         <div id="register-alert"></div>
         <button type="submit" class="btn-primary w-full" id="register-btn">Create account</button>
@@ -148,47 +154,22 @@
       const registerForm = document.getElementById('register-form');
       const tabLogin = document.getElementById('tab-login');
       const tabRegister = document.getElementById('tab-register');
+      const tabsContainer = document.getElementById('tabs-container');
 
       if (mode === 'login') {
         loginForm.classList.remove('hidden');
         registerForm.classList.add('hidden');
         tabLogin.classList.add('active');
         tabRegister.classList.remove('active');
+        tabsContainer.classList.remove('tab-register-active');
       } else {
         loginForm.classList.add('hidden');
         registerForm.classList.remove('hidden');
         tabLogin.classList.remove('active');
         tabRegister.classList.add('active');
+        tabsContainer.classList.add('tab-register-active');
       }
     }
-
-    /* ── Role Field Toggling ── */
-    const roleSelect = document.getElementById('reg-role');
-    const namePhoneGroup = document.getElementById('name-phone-group');
-    const patientFields = document.getElementById('patient-fields');
-    const doctorFields = document.getElementById('doctor-fields');
-    const nameLabel = document.getElementById('name-label');
-
-    function updateRoleFields() {
-      const role = roleSelect.value;
-      if (role === 'admin') {
-        namePhoneGroup.classList.add('hidden');
-        patientFields.classList.add('hidden');
-        doctorFields.classList.add('hidden');
-      } else if (role === 'doctor') {
-        namePhoneGroup.classList.remove('hidden');
-        patientFields.classList.add('hidden');
-        doctorFields.classList.remove('hidden');
-        nameLabel.textContent = 'Doctor name';
-      } else {
-        namePhoneGroup.classList.remove('hidden');
-        patientFields.classList.remove('hidden');
-        doctorFields.classList.add('hidden');
-        nameLabel.textContent = 'Patient name';
-      }
-    }
-    roleSelect.addEventListener('change', updateRoleFields);
-    updateRoleFields();
 
     /* ── Form Handling ── */
     const loginForm = document.getElementById('login-form');
@@ -235,4 +216,5 @@
     if (window.location.hash === '#register') switchMode('register');
   </script>
 </body>
+
 </html>

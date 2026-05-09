@@ -31,7 +31,12 @@ export const register = asyncHandler(async (req, res) => {
   try {
     await connection.beginTransaction();
 
-    const { email, password, role, name, age, gender, phone, address, specialization } = req.body;
+    const { email, password, name, age, gender, phone, address } = req.body;
+    const role = 'patient'; // Force patient role for all public registrations
+
+    if (age !== undefined && Number(age) < 0) {
+      throw new AppError('Age cannot be negative.', 400);
+    }
 
     const [existingUsers] = await connection.query('SELECT id FROM users WHERE email = ?', [email]);
 
