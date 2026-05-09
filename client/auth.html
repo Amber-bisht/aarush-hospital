@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Access Aarush Hospital Management - Login or Create an account.">
+  <title>Aarush Hospital – Access</title>
+  <link rel="stylesheet" href="/style.css">
+  <style>
+    .auth-container {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem 1rem;
+    }
+    .auth-tabs {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 2rem;
+      border-bottom: 1px solid var(--color-border);
+      padding-bottom: 0.5rem;
+    }
+    .auth-tab {
+      cursor: pointer;
+      font-size: 0.875rem;
+      font-weight: 700;
+      color: var(--color-muted);
+      padding: 0.5rem 1rem;
+      transition: all 0.2s;
+      border-radius: var(--radius-md);
+    }
+    .auth-tab.active {
+      color: var(--color-accent);
+      background: var(--color-accent-soft);
+    }
+  </style>
+</head>
+<body>
+  <div class="auth-container">
+    <div class="glass-panel" style="width: 100%; max-width: 32rem; padding: 2.5rem;">
+      <div class="flex items-center gap-2 mb-8">
+        <div style="width: 24px; height: 24px; background: var(--color-accent); border-radius: 6px;"></div>
+        <span class="text-lg font-bold text-black">Aarush Hospital</span>
+      </div>
+
+      <!-- Tabs -->
+      <div class="auth-tabs">
+        <div class="auth-tab active" id="tab-login" onclick="switchMode('login')">Sign In</div>
+        <div class="auth-tab" id="tab-register" onclick="switchMode('register')">Register</div>
+      </div>
+
+      <!-- Login Form -->
+      <form id="login-form" class="space-y-5">
+        <h2 class="text-2xl font-extrabold tracking-tight text-black">Welcome back</h2>
+        <p class="text-sm text-muted">Enter your credentials to access the dashboard.</p>
+        
+        <label class="block">
+          <span class="field-label">Email</span>
+          <input class="field-input" type="email" name="email" placeholder="you@hospital.com" required>
+        </label>
+        <label class="block">
+          <span class="field-label">Password</span>
+          <input class="field-input" type="password" name="password" placeholder="Enter your password" required>
+        </label>
+        <div id="login-alert"></div>
+        <button type="submit" class="btn-primary w-full" id="login-btn">Sign in</button>
+      </form>
+
+      <!-- Register Form (Hidden by default) -->
+      <form id="register-form" class="space-y-5 hidden">
+        <h2 class="text-2xl font-extrabold tracking-tight text-black">Get started</h2>
+        <p class="text-sm text-muted">Create your account by selecting your role.</p>
+
+        <label class="block">
+          <span class="field-label">Role</span>
+          <select class="field-input" name="role" id="reg-role">
+            <option value="patient">Patient</option>
+            <option value="doctor">Doctor</option>
+            <option value="admin">Admin</option>
+          </select>
+        </label>
+
+        <div class="grid gap-5 sm-grid-2">
+          <label class="block">
+            <span class="field-label">Email</span>
+            <input class="field-input" type="email" name="email" placeholder="you@hospital.com" required>
+          </label>
+          <label class="block">
+            <span class="field-label">Password</span>
+            <input class="field-input" type="password" name="password" placeholder="Min. 8 chars" required>
+          </label>
+        </div>
+
+        <div id="name-phone-group" class="grid gap-5 sm-grid-2">
+          <label class="block">
+            <span class="field-label" id="name-label">Patient name</span>
+            <input class="field-input" name="name" placeholder="Full name">
+          </label>
+          <label class="block">
+            <span class="field-label">Phone</span>
+            <input class="field-input" name="phone" placeholder="+91...">
+          </label>
+        </div>
+
+        <div id="patient-fields">
+          <div class="grid gap-5 sm-grid-2">
+            <label class="block">
+              <span class="field-label">Age</span>
+              <input class="field-input" type="number" name="age">
+            </label>
+            <label class="block">
+              <span class="field-label">Gender</span>
+              <select class="field-input" name="gender">
+                <option value="female">Female</option>
+                <option value="male">Male</option>
+                <option value="other">Other</option>
+              </select>
+            </label>
+          </div>
+          <label class="block mt-4">
+            <span class="field-label">Address</span>
+            <input class="field-input" name="address" placeholder="Street, city, locality">
+          </label>
+        </div>
+
+        <div id="doctor-fields" class="hidden">
+          <label class="block">
+            <span class="field-label">Specialization</span>
+            <input class="field-input" name="specialization" placeholder="Cardiology">
+          </label>
+        </div>
+
+        <div id="register-alert"></div>
+        <button type="submit" class="btn-primary w-full" id="register-btn">Create account</button>
+      </form>
+    </div>
+  </div>
+
+  <script src="/js/api.js"></script>
+  <script src="/js/utils.js"></script>
+  <script src="/js/components.js"></script>
+  <script src="/js/auth.js"></script>
+  <script>
+    /* ── Switching Logic ── */
+    function switchMode(mode) {
+      const loginForm = document.getElementById('login-form');
+      const registerForm = document.getElementById('register-form');
+      const tabLogin = document.getElementById('tab-login');
+      const tabRegister = document.getElementById('tab-register');
+
+      if (mode === 'login') {
+        loginForm.classList.remove('hidden');
+        registerForm.classList.add('hidden');
+        tabLogin.classList.add('active');
+        tabRegister.classList.remove('active');
+      } else {
+        loginForm.classList.add('hidden');
+        registerForm.classList.remove('hidden');
+        tabLogin.classList.remove('active');
+        tabRegister.classList.add('active');
+      }
+    }
+
+    /* ── Role Field Toggling ── */
+    const roleSelect = document.getElementById('reg-role');
+    const namePhoneGroup = document.getElementById('name-phone-group');
+    const patientFields = document.getElementById('patient-fields');
+    const doctorFields = document.getElementById('doctor-fields');
+    const nameLabel = document.getElementById('name-label');
+
+    function updateRoleFields() {
+      const role = roleSelect.value;
+      if (role === 'admin') {
+        namePhoneGroup.classList.add('hidden');
+        patientFields.classList.add('hidden');
+        doctorFields.classList.add('hidden');
+      } else if (role === 'doctor') {
+        namePhoneGroup.classList.remove('hidden');
+        patientFields.classList.add('hidden');
+        doctorFields.classList.remove('hidden');
+        nameLabel.textContent = 'Doctor name';
+      } else {
+        namePhoneGroup.classList.remove('hidden');
+        patientFields.classList.remove('hidden');
+        doctorFields.classList.add('hidden');
+        nameLabel.textContent = 'Patient name';
+      }
+    }
+    roleSelect.addEventListener('change', updateRoleFields);
+    updateRoleFields();
+
+    /* ── Form Handling ── */
+    const loginForm = document.getElementById('login-form');
+    const registerForm = document.getElementById('register-form');
+
+    loginForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const btn = document.getElementById('login-btn');
+      btn.disabled = true;
+      btn.textContent = 'Signing in...';
+      try {
+        const data = await auth.login({ email: loginForm.email.value, password: loginForm.password.value });
+        window.location.href = getDefaultRouteForRole(data.user.role);
+      } catch (err) {
+        showAlert('login-alert', err.data?.message || 'Unable to sign in.', 'error');
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Sign in';
+      }
+    });
+
+    registerForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const btn = document.getElementById('register-btn');
+      btn.disabled = true;
+      btn.textContent = 'Creating account...';
+      const fd = new FormData(registerForm);
+      const payload = Object.fromEntries(fd.entries());
+      if (payload.role === 'patient') payload.age = Number(payload.age);
+
+      try {
+        const data = await auth.register(payload);
+        window.location.href = getDefaultRouteForRole(data.user.role);
+      } catch (err) {
+        const details = err.data?.details?.join(' ');
+        showAlert('register-alert', details || err.data?.message || 'Unable to register.', 'error');
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Create account';
+      }
+    });
+
+    // Auto-switch based on URL hash if provided
+    if (window.location.hash === '#register') switchMode('register');
+  </script>
+</body>
+</html>

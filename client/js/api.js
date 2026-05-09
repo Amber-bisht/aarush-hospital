@@ -78,17 +78,17 @@ async function request(method, path, body, _retry) {
           response = await fetch(url, options);
         } else {
           writeSession(null);
-          window.location.href = '/login.html';
+          window.location.href = '/auth.html';
           throw new Error('Session expired');
         }
       } catch (refreshError) {
         writeSession(null);
-        window.location.href = '/login.html';
+        window.location.href = '/auth.html';
         throw refreshError;
       }
     } else {
       writeSession(null);
-      window.location.href = '/login.html';
+      window.location.href = '/auth.html';
       throw new Error('No refresh token');
     }
   }

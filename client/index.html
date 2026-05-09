@@ -85,7 +85,7 @@
     <div class="flex items-center gap-6">
       <a href="#features" class="text-sm font-semibold text-muted hover:text-black transition-colors">Features</a>
       <div id="auth-nav-btn">
-        <a href="/login.html" class="btn-primary">Sign In</a>
+        <a href="/auth.html" class="btn-primary">Sign In</a>
       </div>
     </div>
   </nav>
@@ -100,7 +100,7 @@
         prescriptions with a premium interface built for speed.
       </p>
       <div class="flex gap-4 items-center">
-        <a href="/register.html" class="btn-primary" style="padding: 1rem 2rem; font-size: 1rem;">Get Started Free</a>
+        <a href="/auth.html#register" class="btn-primary" style="padding: 1rem 2rem; font-size: 1rem;">Get Started Free</a>
         <a href="#features" class="btn-secondary" style="padding: 1rem 2rem; font-size: 1rem;">Explore Features</a>
       </div>
     </div>
@@ -161,6 +161,9 @@
       const user = auth.getUser();
       const route = getDefaultRouteForRole(user.role);
       authBtnContainer.innerHTML = `<a href="${route}" class="btn-primary">Go to Dashboard</a>`;
+    } else {
+      // If we are on index and not logged in, we stay here, but the redirect script in index.html is gone now
+      // Actually, I should ensure the index.html redirect logic is removed since it's now a landing page
     }
   </script>
 </body>

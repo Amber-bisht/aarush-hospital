@@ -23,7 +23,7 @@ const auth = {
       }
     } finally {
       writeSession(null);
-      window.location.href = '/login.html';
+      window.location.href = '/auth.html';
     }
   },
 
@@ -51,7 +51,7 @@ const auth = {
    */
   guard(allowedRoles) {
     if (!this.isAuthenticated()) {
-      window.location.href = '/login.html';
+      window.location.href = '/auth.html';
       return false;
     }
     if (allowedRoles && !allowedRoles.includes(this.getUser().role)) {
