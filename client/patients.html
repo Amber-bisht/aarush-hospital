@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Manage patient records, appointments, prescriptions, and billing.">
+  <title>Patients – HMS</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <div id="app"></div>
+
+  <!-- Create / Edit Patient Modal -->
+  <div id="patient-form-modal" class="modal-overlay hidden">
+    <div class="glass-panel modal-panel">
+      <div class="modal-header">
+        <div>
+          <h3 class="modal-title" id="patient-modal-title">Create Patient</h3>
+          <p class="modal-desc">Capture core demographic details for the patient profile.</p>
+        </div>
+        <button class="modal-close" onclick="closeModal('patient-form-modal')">Close</button>
+      </div>
+      <form id="patient-form" class="space-y-5">
+        <input type="hidden" name="editingId" id="patient-editing-id">
+        <div class="grid gap-5 sm-grid-2">
+          <label class="block">
+            <span class="field-label">Name</span>
+            <input class="field-input" name="name" required>
+          </label>
+          <label class="block">
+            <span class="field-label">Age</span>
+            <input class="field-input" type="number" name="age" required>
+          </label>
+        </div>
+        <div class="grid gap-5 sm-grid-2">
+          <label class="block">
+            <span class="field-label">Gender</span>
+            <select class="field-input" name="gender">
+              <option value="female">Female</option>
+              <option value="male">Male</option>
+              <option value="other">Other</option>
+            </select>
+          </label>
+          <label class="block">
+            <span class="field-label">Phone</span>
+            <input class="field-input" name="phone" required>
+          </label>
+        </div>
+        <label class="block">
+          <span class="field-label">Address</span>
+          <input class="field-input" name="address" required>
+        </label>
+        <button type="submit" class="btn-primary w-full" id="patient-form-btn">Create patient</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Patient Detail Modal -->
+  <div id="patient-detail-modal" class="modal-overlay hidden">
+    <div class="glass-panel modal-panel">
+      <div class="modal-header">
+        <div>
+          <h3 class="modal-title" id="patient-detail-title">Patient record</h3>
+          <p class="modal-desc">Appointments, prescriptions, and billing tied to this patient.</p>
+        </div>
+        <button class="modal-close" onclick="closeModal('patient-detail-modal')">Close</button>
+      </div>
+      <div id="patient-detail-body" class="space-y-6"></div>
+    </div>
+  </div>
+
+  <script src="/js/api.js"></script>
+  <script src="/js/utils.js"></script>
+  <script src="/js/components.js"></script>
+  <script src="/js/auth.js"></script>
+  <script src="/js/app-shell.js"></script>
+  <script src="/js/patients.js"></script>
+</body>
+</html>

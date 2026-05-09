@@ -1,34 +1,41 @@
 # Hospital Management System
 
-A production-ready Hospital Management System built with React, Vite, TailwindCSS, React Router, Node.js, Express, raw MySQL queries, JWT authentication, Chart.js, Docker, and docker-compose.
+A production-ready Hospital Management System built with Node.js, Express, raw MySQL queries, Chart.js, and a plain HTML/CSS/JS frontend.
 
 ## Project Structure
 
 ```text
 hospitalmanagmentapp.com/
 ├── client/
-│   ├── package.json
-│   ├── src/
-│   │   ├── components/
-│   │   ├── context/
-│   │   ├── hooks/
-│   │   ├── layouts/
-│   │   ├── pages/
-│   │   ├── services/
-│   │   ├── utils/
-│   │   ├── App.jsx
-│   │   ├── index.css
-│   │   └── main.jsx
-│   ├── tailwind.config.js
-│   └── vite.config.js
+│   ├── index.html          # Redirect entry point
+│   ├── login.html          # Login page
+│   ├── register.html       # Registration page
+│   ├── dashboard.html      # Admin dashboard (Chart.js)
+│   ├── doctors.html        # Doctor management
+│   ├── patients.html       # Patient management
+│   ├── appointments.html   # Appointment workflows
+│   ├── billing.html        # Billing and payments
+│   ├── style.css           # Global CSS design system
+│   └── js/
+│       ├── api.js           # Fetch-based API layer with JWT refresh
+│       ├── auth.js          # Auth helpers (login, register, guard)
+│       ├── utils.js         # Formatting and role utilities
+│       ├── components.js    # Reusable UI builders (tables, modals, badges)
+│       ├── app-shell.js     # Sidebar + topbar injection for authenticated pages
+│       ├── login.js
+│       ├── register.js
+│       ├── dashboard.js
+│       ├── doctors.js
+│       ├── patients.js
+│       ├── appointments.js
+│       └── billing.js
 ├── database/
-│   ├── schema.sql
+│   └── schema.sql
 ├── server/
 │   ├── controllers/
 │   ├── db/
 │   ├── middleware/
 │   ├── routes/
-│   ├── utils/
 │   ├── .env
 │   ├── package.json
 │   └── server.js
@@ -38,13 +45,11 @@ hospitalmanagmentapp.com/
 
 ## Features
 
-- JWT access and refresh token authentication with bcrypt password hashing
-- Role-aware experiences for `admin`, `doctor`, and `patient`
-- Patient CRUD, self-service views, doctor directory, appointment workflows, and billing
 - Prescription capture tied to appointments
 - Admin dashboard with Chart.js analytics
 - Raw SQL only with MySQL foreign keys and indexes
 - Responsive UI with a modern white, black, and pink hospital theme
+- Role-based access control (Admin, Doctor, Patient)
 
 ## Database
 
@@ -57,59 +62,27 @@ Schema lives in [`database/schema.sql`](./database/schema.sql) and includes:
 - `prescriptions`
 - `bills`
 
-Seed data lives in [`database/seed.sql`](./database/seed.sql).
-
-### Seed Credentials
-
-- Admin: `admin@hospital.com`
-- Doctor: `doctor@hospital.com`
-- Patient: `patient@hospital.com`
-- Password: `Password123!`
-
 ## Local Setup
 
-### 1. Create the MySQL database
-
-```sql
-SOURCE database/schema.sql;
-SOURCE database/seed.sql;
-```
-
-Or run:
-
-```bash
-mysql -u root -p < database/schema.sql
-mysql -u root -p < database/seed.sql
-```
-
-### 2. Configure environment variables
+### 1. Configure environment variables
 
 ```bash
 cp server/.env.example server/.env
-cp client/.env.example client/.env
 ```
 
 Update `server/.env` with your MySQL credentials if needed.
 
-### 3. Install dependencies
+### 2. Install dependencies
 
 ```bash
 cd server && npm install
-cd client && npm install
 ```
 
-### 4. Start the backend
+### 3. Start the server
 
 ```bash
 cd server
 npm run dev
 ```
 
-### 5. Start the frontend
-
-```bash
-cd client
-npm run dev
-```
-
-Frontend runs on [http://localhost:5173](http://localhost:5173) and backend runs on [http://localhost:5000](http://localhost:5000).
+The server serves both the API and the static frontend on [http://localhost:5000](http://localhost:5000).

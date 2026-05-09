@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Book, reschedule, cancel, and complete appointments.">
+  <title>Appointments – HMS</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <div id="app"></div>
+
+  <!-- Book Appointment Modal -->
+  <div id="booking-modal" class="modal-overlay hidden">
+    <div class="glass-panel modal-panel">
+      <div class="modal-header">
+        <div>
+          <h3 class="modal-title">Book appointment</h3>
+          <p class="modal-desc">Create a new appointment with the right doctor and patient context.</p>
+        </div>
+        <button class="modal-close" onclick="closeModal('booking-modal')">Close</button>
+      </div>
+      <form id="booking-form" class="space-y-5">
+        <div id="booking-patient-field"></div>
+        <label class="block">
+          <span class="field-label">Doctor</span>
+          <select class="field-input" name="doctor_id" id="booking-doctor-select" required>
+            <option value="">Select doctor</option>
+          </select>
+        </label>
+        <label class="block">
+          <span class="field-label">Appointment date</span>
+          <input class="field-input" type="datetime-local" name="date" required>
+        </label>
+        <label class="block">
+          <span class="field-label">Reason</span>
+          <input class="field-input" name="reason" placeholder="Short visit summary">
+        </label>
+        <label class="block">
+          <span class="field-label">Notes</span>
+          <textarea class="field-input min-h-28" name="notes" placeholder="Any preparation or context"></textarea>
+        </label>
+        <button type="submit" class="btn-primary w-full">Confirm appointment</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Reschedule Modal -->
+  <div id="reschedule-modal" class="modal-overlay hidden">
+    <div class="glass-panel modal-panel">
+      <div class="modal-header">
+        <div>
+          <h3 class="modal-title">Reschedule appointment</h3>
+          <p class="modal-desc">Pick a new slot for the selected appointment.</p>
+        </div>
+        <button class="modal-close" onclick="closeModal('reschedule-modal')">Close</button>
+      </div>
+      <form id="reschedule-form" class="space-y-5">
+        <input type="hidden" name="appointment_id" id="reschedule-id">
+        <label class="block">
+          <span class="field-label">New date and time</span>
+          <input class="field-input" type="datetime-local" name="date" required>
+        </label>
+        <button type="submit" class="btn-primary w-full">Save new slot</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Prescription Modal -->
+  <div id="prescription-modal" class="modal-overlay hidden">
+    <div class="glass-panel modal-panel">
+      <div class="modal-header">
+        <div>
+          <h3 class="modal-title">Prescription and diagnosis</h3>
+          <p class="modal-desc">Record the clinical outcome for this appointment.</p>
+        </div>
+        <button class="modal-close" onclick="closeModal('prescription-modal')">Close</button>
+      </div>
+      <form id="prescription-form" class="space-y-5">
+        <input type="hidden" name="appointment_id" id="prescription-appt-id">
+        <label class="block">
+          <span class="field-label">Diagnosis</span>
+          <input class="field-input" name="diagnosis" required>
+        </label>
+        <label class="block">
+          <span class="field-label">Medicines</span>
+          <textarea class="field-input min-h-28" name="medicines" required></textarea>
+        </label>
+        <label class="block">
+          <span class="field-label">Clinical notes</span>
+          <textarea class="field-input min-h-28" name="notes"></textarea>
+        </label>
+        <button type="submit" class="btn-primary w-full">Save prescription</button>
+      </form>
+    </div>
+  </div>
+
+  <script src="/js/api.js"></script>
+  <script src="/js/utils.js"></script>
+  <script src="/js/components.js"></script>
+  <script src="/js/auth.js"></script>
+  <script src="/js/app-shell.js"></script>
+  <script src="/js/appointments.js"></script>
+</body>
+</html>

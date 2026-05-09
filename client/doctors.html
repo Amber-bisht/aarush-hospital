@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Manage doctor profiles and browse clinician specializations.">
+  <title>Doctors – HMS</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <div id="app"></div>
+
+  <!-- Create / Edit Doctor Modal -->
+  <div id="doctor-form-modal" class="modal-overlay hidden">
+    <div class="glass-panel modal-panel">
+      <div class="modal-header">
+        <div>
+          <h3 class="modal-title" id="doctor-modal-title">Create Doctor</h3>
+          <p class="modal-desc">Manage the provider directory and specializations.</p>
+        </div>
+        <button class="modal-close" onclick="closeModal('doctor-form-modal')">Close</button>
+      </div>
+      <form id="doctor-form" class="space-y-5">
+        <input type="hidden" name="editingId" id="doctor-editing-id">
+        <label class="block">
+          <span class="field-label">Doctor name</span>
+          <input class="field-input" name="name" required>
+        </label>
+        <div class="grid gap-5 sm-grid-2">
+          <label class="block">
+            <span class="field-label">Specialization</span>
+            <input class="field-input" name="specialization" required>
+          </label>
+          <label class="block">
+            <span class="field-label">Phone</span>
+            <input class="field-input" name="phone" required>
+          </label>
+        </div>
+        <button type="submit" class="btn-primary w-full" id="doctor-form-btn">Create doctor</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Doctor Detail Modal -->
+  <div id="doctor-detail-modal" class="modal-overlay hidden">
+    <div class="glass-panel modal-panel">
+      <div class="modal-header">
+        <div>
+          <h3 class="modal-title" id="doctor-detail-title">Doctor profile</h3>
+          <p class="modal-desc">Clinician details and, when permitted, appointment workload.</p>
+        </div>
+        <button class="modal-close" onclick="closeModal('doctor-detail-modal')">Close</button>
+      </div>
+      <div id="doctor-detail-body" class="space-y-6"></div>
+    </div>
+  </div>
+
+  <script src="/js/api.js"></script>
+  <script src="/js/utils.js"></script>
+  <script src="/js/components.js"></script>
+  <script src="/js/auth.js"></script>
+  <script src="/js/app-shell.js"></script>
+  <script src="/js/doctors.js"></script>
+</body>
+</html>

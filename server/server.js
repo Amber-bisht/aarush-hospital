@@ -1,6 +1,8 @@
 import cors from 'cors';
 import dotenv from 'dotenv';
 import express from 'express';
+import path from 'path';
+import { fileURLToPath } from 'url';
 import authRoutes from './routes/authRoutes.js';
 import billingRoutes from './routes/billingRoutes.js';
 import dashboardRoutes from './routes/dashboardRoutes.js';
@@ -22,6 +24,11 @@ app.use(
 );
 app.use(express.json());
 
+// Serve the plain HTML/CSS/JS client
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+app.use(express.static(path.join(__dirname, '..', 'client')));
+
 app.get('/api/health', (req, res) => {
   res.json({
     message: 'Hospital Management System API is running.',
@@ -36,8 +43,12 @@ app.use('/api/appointments', appointmentRoutes);
 app.use('/api/bills', billingRoutes);
 app.use('/api/dashboard', dashboardRoutes);
 
+// For any non-API route, serve the client index.html
 app.use('*', (req, res, next) => {
-  next(new AppError(`Route ${req.originalUrl} was not found.`, 404));
+  if (req.originalUrl.startsWith('/api')) {
+    return next(new AppError(`Route ${req.originalUrl} was not found.`, 404));
+  }
+  res.sendFile(path.join(__dirname, '..', 'client', 'index.html'));
 });
 
 app.use(errorMiddleware);
